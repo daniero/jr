@@ -10,15 +10,15 @@ module Jr
     rule(:integer) { match('[0-9]').repeat(1).as(:int) >> space? }
 
     # Stuff
-    rule(:array) { integer.repeat(0) >> space? }
+    rule(:array) { integer.repeat(0).as(:arr) >> space? }
 
     root(:array)
   end
 
   class Transformer < Parslet::Transform
-    rule(int: simple(:i)) {
-      i.to_i
-    }
+    rule(int: simple(:i)) { Integer(i) }
+
+    rule(arr: sequence(:x)) { x }
   end
 
   class Parser
