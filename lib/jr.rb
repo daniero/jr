@@ -1,5 +1,6 @@
 require "jr/version"
+require "jr/parser"
 
 module Jr
-  # Your code goes here...
+  # something here
 end
