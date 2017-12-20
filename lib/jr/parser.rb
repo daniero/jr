@@ -23,7 +23,7 @@ module Jr
     end
 
     rule(:infix) do
-      array.as(:left) >> operator.as(:op) >> array.as(:right)
+      array.as(:left) >> operator.as(:op) >> expression.as(:right)
     end
   end
 
@@ -31,11 +31,11 @@ module Jr
     rule(int: simple(:i)) { Integer(i) }
     rule(plus: simple(:_)) { :+ }
 
-    # TODO: custom ast class for array, so infix rule can be changed to simple
+    # TODO: custom ast class for array, so infix left can be changed to simple
 
-    rule(arr: sequence(:x)) { x }
+    rule(arr: sequence(:x)) { Vector[*x] }
 
-    rule(left: sequence(:left), op: :+, right: sequence(:right)) do
+    rule(left: sequence(:left), op: :+, right: simple(:right)) do
       Addition.new(left, right)
     end
   end
