@@ -1,24 +1,43 @@
 require 'parslet'
+require 'jr/ast'
 
 module Jr
   class Grammar < Parslet::Parser
+    root(:expression)
+
     # Whitespace
     rule(:space)  { match('\s').repeat(1) }
     rule(:space?) { space.maybe }
 
     # Tokens
     rule(:integer) { match('[0-9]').repeat(1).as(:int) >> space? }
+    rule(:plus) { str('+').as(:plus) >> space? }
 
-    # Stuff
-    rule(:array) { integer.repeat(0).as(:arr) >> space? }
+    # Compounds
+    rule(:array) { integer.repeat(0).as(:arr) }
+    rule(:operator) { plus }
 
-    root(:array)
+    # Grammar
+    rule(:expression) do
+      infix | array
+    end
+
+    rule(:infix) do
+      array.as(:left) >> operator.as(:op) >> array.as(:right)
+    end
   end
 
   class Transformer < Parslet::Transform
     rule(int: simple(:i)) { Integer(i) }
+    rule(plus: simple(:_)) { :+ }
+
+    # TODO: custom ast class for array, so infix rule can be changed to simple
 
     rule(arr: sequence(:x)) { x }
+
+    rule(left: sequence(:left), op: :+, right: sequence(:right)) do
+      Addition.new(left, right)
+    end
   end
 
   class Parser
