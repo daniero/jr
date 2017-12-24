@@ -31,12 +31,9 @@ module Jr
     rule(int: simple(:i)) { Integer(i) }
     rule(plus: simple(:_)) { :PLUS }
 
-    rule(arr: sequence(:x)) { Vector[*x] }
+    rule(arr: sequence(:x)) { Vector[x] }
 
-    # TODO: Vector shouldn't subclass Array directly; Parslets sees it as a sequence.
-    # infix left should be changed from sequence to simple
-
-    rule(left: sequence(:left), op: :PLUS, right: simple(:right)) do
+    rule(left: simple(:left), op: :PLUS, right: simple(:right)) do
       Addition.new(left, right)
     end
   end
