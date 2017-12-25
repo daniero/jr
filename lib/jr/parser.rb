@@ -12,10 +12,11 @@ module Jr
     # Tokens
     rule(:integer) { match('[0-9]').repeat(1).as(:int) >> space? }
     rule(:plus) { str('+').as(:plus) >> space? }
+    rule(:minus) { str('-').as(:minus) >> space? }
 
     # Compounds
     rule(:array) { integer.repeat(0).as(:arr) }
-    rule(:operator) { plus }
+    rule(:operator) { plus | minus }
 
     # Grammar
     rule(:expression) do
@@ -29,12 +30,13 @@ module Jr
 
   class Transformer < Parslet::Transform
     rule(int: simple(:i)) { Integer(i) }
-    rule(plus: simple(:_)) { :PLUS }
+    rule(plus: simple(:_)) { Addition }
+    rule(minus: simple(:_)) { Subtraction }
 
     rule(arr: sequence(:x)) { Vector[x] }
 
-    rule(left: simple(:left), op: :PLUS, right: simple(:right)) do
-      Addition.new(left, right)
+    rule(left: simple(:left), op: simple(:op), right: simple(:right)) do
+      op.new(left, right)
     end
   end
 

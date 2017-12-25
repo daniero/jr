@@ -8,17 +8,26 @@ module Jr
       "#{self.class.name}#{values}"
     end
 
-    def + other
+    def +(other)
+      apply_infix(other) { |x,y| x + y }
+    end
+
+    def -(other)
+      apply_infix(other) { |x,y| x - y }
+    end
+
+    private
+    def apply_infix(other)
       y = other.evaluate
 
       if values.length == 1
         v = values.first
-        Vector[y.values.map { |x| v+x }]
+        Vector[y.values.map { |x| yield v,x }]
       elsif values.length == y.values.length
-        Vector[values.zip(y.values).map { |a,b| a + b }]
+        Vector[values.zip(y.values).map { |a,b| yield a,b }]
       elsif y.values.length == 1
         v = y.values.first
-        Vector[values.map { |z| z+v }]
+        Vector[values.map { |z| yield z,v }]
       end
     end
   end
@@ -26,6 +35,12 @@ module Jr
   Addition = Struct.new(:left, :right) do
     def evaluate
       left + right
+    end
+  end
+
+  Subtraction = Struct.new(:left, :right) do
+    def evaluate
+      left - right
     end
   end
 end
