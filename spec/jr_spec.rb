@@ -108,5 +108,11 @@ module Jr
       end
     end
 
+    describe "prefix *" do
+      it "clamps its arguments within the range [-1,1]" do
+        expect(subject.evaluate('* _42 _1 0 1 24')).to eql Vector[[-1, -1, 0, 1, 1]]
+      end
+    end
+
   end
 end

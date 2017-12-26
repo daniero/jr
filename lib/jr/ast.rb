@@ -16,6 +16,10 @@ module Jr
       Vector[values.map { |v| -v }]
     end
 
+    def clamp_values
+      Vector[values.map { |v| v.clamp(-1,1) }]
+    end
+
     def +(other)
       apply_infix(other) { |x,y| x + y }
     end
@@ -78,7 +82,7 @@ module Jr
     end
 
     def self.prefix(right)
-      raise "TODO"
+      right.evaluate.clamp_values
     end
   end
 
