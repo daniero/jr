@@ -6,7 +6,7 @@ runtime = Jr::Runtime.new
 
 while gets
   begin 
-    p runtime.evaluate($_) unless $_.strip.empty?
+    p runtime.evaluate($_) unless $_.strip!.empty?
   rescue Parslet::ParseFailed => error
     puts error.parse_failure_cause.ascii_tree
   rescue RuntimeError => error
