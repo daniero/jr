@@ -5,7 +5,7 @@ module Jr
     end
 
     def inspect
-      values.join(" ")
+      values.map { |v| v.to_s.sub('-', '_') } * ' '
     end
 
     def +@
