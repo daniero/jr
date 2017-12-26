@@ -8,6 +8,14 @@ module Jr
       values.join(" ")
     end
 
+    def +@
+      self
+    end
+
+    def -@
+      Vector[values.map { |v| -v }]
+    end
+
     def +(other)
       apply_infix(other) { |x,y| x + y }
     end
@@ -50,7 +58,7 @@ module Jr
     end
 
     def self.prefix(right)
-      right
+      +right.evaluate
     end
   end
 
@@ -60,7 +68,7 @@ module Jr
     end
 
     def self.prefix(right)
-      raise "TODO"
+      -right.evaluate
     end
   end
 

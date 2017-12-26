@@ -82,9 +82,19 @@ module Jr
       end
     end
 
-    describe "prefix expressions" do
-      it "works" do
+    describe "prefix plus" do
+      it "just returns its arguments" do
         expect(subject.evaluate('+ 1 2 3')).to eql Vector[[1, 2, 3]]
+      end
+    end
+
+    describe "prefix minus" do
+      it "negates its arguments" do
+        expect(subject.evaluate('- 1 2 3')).to eql Vector[[-1, -2, -3]]
+      end
+
+      it "double negates its arguments" do
+        expect(subject.evaluate('--1 2 3')).to eql Vector[[1, 2, 3]]
       end
     end
 
@@ -94,7 +104,7 @@ module Jr
       end
 
       it "handles infix with prefix" do
-        expect(subject.evaluate('1 2 3 + + 4')).to eql Vector[[5, 6, 7]]
+        expect(subject.evaluate('1 2 3 + - 4')).to eql Vector[[-3, -2, -1]]
       end
     end
 
