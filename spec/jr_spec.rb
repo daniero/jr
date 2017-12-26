@@ -39,5 +39,23 @@ module Jr
       end
     end
 
+    describe "multiplication" do
+      it "works" do
+        expect(subject.evaluate('1 2 3 * 4 5 6')).to eql Vector[[4, 10, 18]]
+      end
+    end
+
+    describe "division" do
+      it "works" do
+        expect(subject.evaluate('10 20 30 % 5')).to eql Vector[[2, 4, 6]]
+      end
+    end
+
+    describe "expressions" do
+      it "are always parsed from right to left" do
+        expect(subject.evaluate('1 2 3 * 2 + 8')).to eql Vector[[10, 20, 30]]
+      end
+    end
+
   end
 end

@@ -13,10 +13,12 @@ module Jr
     rule(:integer) { match('[0-9]').repeat(1).as(:int) >> space? }
     rule(:plus) { str('+').as(:plus) >> space? }
     rule(:minus) { str('-').as(:minus) >> space? }
+    rule(:times) { str('*').as(:times) >> space? }
+    rule(:divide) { str('%').as(:divide) >> space? }
 
     # Compounds
     rule(:array) { integer.repeat(0).as(:arr) }
-    rule(:operator) { plus | minus }
+    rule(:operator) { plus | minus | times | divide }
 
     # Grammar
     rule(:expression) do
@@ -24,18 +26,20 @@ module Jr
     end
 
     rule(:infix) do
-      array.as(:left) >> operator.as(:op) >> expression.as(:right)
+      array.as(:left) >> operator.as(:infix) >> expression.as(:right)
     end
   end
 
   class Transformer < Parslet::Transform
     rule(int: simple(:i)) { Integer(i) }
-    rule(plus: simple(:_)) { Addition }
-    rule(minus: simple(:_)) { Subtraction }
-
     rule(arr: sequence(:x)) { Vector[x] }
 
-    rule(left: simple(:left), op: simple(:op), right: simple(:right)) do
+    rule(plus: simple(:_)) { Addition }
+    rule(minus: simple(:_)) { Subtraction }
+    rule(times: simple(:_)) { Multiplication }
+    rule(divide: simple(:_)) { Division }
+
+    rule(left: simple(:left), infix: simple(:op), right: simple(:right)) do
       op.new(left, right)
     end
   end

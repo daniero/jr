@@ -16,6 +16,14 @@ module Jr
       apply_infix(other) { |x,y| x - y }
     end
 
+    def *(other)
+      apply_infix(other) { |x,y| x * y }
+    end
+
+    def /(other)
+      apply_infix(other) { |x,y| x / y }
+    end
+
     private
     def apply_infix(other)
       y = other.evaluate
@@ -41,6 +49,18 @@ module Jr
   Subtraction = Struct.new(:left, :right) do
     def evaluate
       left - right
+    end
+  end
+
+  Multiplication = Struct.new(:left, :right) do
+    def evaluate
+      left * right
+    end
+  end
+
+  Division = Struct.new(:left, :right) do
+    def evaluate
+      left / right
     end
   end
 end
