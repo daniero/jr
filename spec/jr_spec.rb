@@ -35,13 +35,13 @@ module Jr
 
     describe "subtraction" do
       it "works" do
-        expect(subject.evaluate('10 - 1 2 3')).to eql Vector[[9, 8, 7]]
+        expect(subject.evaluate('10 - 1 2 _3')).to eql Vector[[9, 8, 13]]
       end
     end
 
     describe "multiplication" do
       it "works" do
-        expect(subject.evaluate('1 2 3 * 4 5 6')).to eql Vector[[4, 10, 18]]
+        expect(subject.evaluate('1 2 3 * 4 _5 6')).to eql Vector[[4, -10, 18]]
       end
     end
 

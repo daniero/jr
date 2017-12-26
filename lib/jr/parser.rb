@@ -10,7 +10,9 @@ module Jr
     rule(:space?) { space.maybe }
 
     # Tokens
-    rule(:integer) { match('[0-9]').repeat(1).as(:int) >> space? }
+    rule(:integer) { str('_').as(:neg).maybe >>
+                     match('[0-9]').repeat(1).as(:int) >>
+                     space? }
     rule(:left_paren) { str('(') >> space? }
     rule(:right_paren) { str(')') >> space? }
     rule(:plus) { str('+').as(:plus) >> space? }
@@ -41,6 +43,8 @@ module Jr
 
   class Transformer < Parslet::Transform
     rule(int: simple(:i)) { Integer(i) }
+    rule(neg: simple(:_), int: simple(:i)) { -Integer(i) }
+
     rule(arr: sequence(:x)) { Vector[x] }
 
     rule(parens: subtree(:exp)) { exp }

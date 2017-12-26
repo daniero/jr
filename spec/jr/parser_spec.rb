@@ -5,8 +5,16 @@ module Jr
   RSpec.describe Parser  do
     subject { Parser.new }
 
+    it "parses positive integers" do
+      expect(subject.parse("42")).to eql Vector[[42]]
+    end
+
+    it "parses negative integers" do
+      expect(subject.parse("_13")).to eql Vector[[-13]]
+    end
+
     it "parses arrays" do
-      expect(subject.parse("1 23 456")).to eql Vector[[1, 23, 456]]
+      expect(subject.parse("1 _23 456")).to eql Vector[[1, -23, 456]]
     end
 
     it "parses infix expressions" do
