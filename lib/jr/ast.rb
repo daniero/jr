@@ -5,7 +5,7 @@ module Jr
     end
 
     def inspect
-      "#{self.class.name}#{values}"
+      values.join(" ")
     end
 
     def +(other)

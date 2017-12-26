@@ -8,12 +8,12 @@ begin
   history = Readline::HISTORY
 
   begin
-    while input = Readline.readline('> ', true)
+    while input = Readline.readline('  ', true)
       input.strip!
       if input.empty?
         history.pop
       else
-        p runtime.evaluate(input)
+        puts "= #{runtime.evaluate(input).inspect}"
         histories = history.length
         history.pop if histories >= 2 && history[histories-2] == history[histories-1]
       end
