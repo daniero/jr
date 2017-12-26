@@ -9,7 +9,7 @@ module Jr
       expect(subject.parse("1 23 456")).to eql Vector[[1, 23, 456]]
     end
 
-    it "parses expressions" do
+    it "parses infix expressions" do
       expect(subject.parse("1 2 + 3 4")).to eql Addition.new(Vector[[1, 2]], Vector[[3, 4]])
     end
 

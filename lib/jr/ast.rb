@@ -42,6 +42,50 @@ module Jr
     end
   end
 
+  # Generic operators
+
+  class Plus
+    def self.infix(left, right)
+      Addition.new(left, right)
+    end
+
+    def self.prefix(right)
+      right
+    end
+  end
+
+  class Minus
+    def self.infix(left, right)
+      Subtraction.new(left, right)
+    end
+
+    def self.prefix(right)
+      raise "TODO"
+    end
+  end
+
+  class Times
+    def self.infix(left, right)
+      Multiplication.new(left, right)
+    end
+
+    def self.prefix(right)
+      raise "TODO"
+    end
+  end
+
+  class Over
+    def self.infix(left, right)
+      Division.new(left, right)
+    end
+
+    def self.prefix(right)
+      raise "TODO"
+    end
+  end
+
+  # Infix operators
+
   Addition = Struct.new(:left, :right) do
     def evaluate
       left.evaluate + right
@@ -65,4 +109,5 @@ module Jr
       left.evaluate / right
     end
   end
+
 end
