@@ -16,5 +16,9 @@ module Jr
     it "is right recursive" do
       expect(subject.parse("1 + 2 + 3 4")).to eql Addition.new(Vector[[1]], Addition.new(Vector[[2]], Vector[[3, 4]]))
     end
+
+    it "parses parens" do
+      expect(subject.parse("1 * (2 - 3) % 4")).to eql Multiplication.new(Vector[[1]], Division.new(Subtraction.new(Vector[[2]], Vector[[3]]), Vector[[4]]))
+    end
   end
 end

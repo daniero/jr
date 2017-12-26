@@ -55,6 +55,31 @@ module Jr
       it "are always parsed from right to left" do
         expect(subject.evaluate('1 2 3 * 2 + 8')).to eql Vector[[10, 20, 30]]
       end
+
+      it "parses arrays inside parens" do
+        expect(subject.evaluate('(1 2 3)')).to eql Vector[[1, 2, 3]]
+      end
+
+      it "parses expressions inside parens" do
+        expect(subject.evaluate('(1 + 3)')).to eql Vector[[4]]
+      end
+
+      it "parses parens as right side of expressions" do
+        expect(subject.evaluate('10 - (2 + 3)')).to eql Vector[[5]]
+      end
+
+      it "parses parens as left side of expressions" do
+        expect(subject.evaluate('(5 + 7) % 2')).to eql Vector[[6]]
+      end
+
+      it "parses parens inside expressions" do
+        expect(subject.evaluate('3 * 4 + 8 % 2')).to eql Vector[[24]]    # (3 * (4 + (8 / 2)))
+        expect(subject.evaluate('3 * (4 + 8) % 2')).to eql Vector[[18]]  # (3 * ((4 + 8) / 2))
+      end
+
+      it "parses nested parens" do
+        expect(subject.evaluate('(((3)))')).to eql Vector[[3]]
+      end
     end
 
   end

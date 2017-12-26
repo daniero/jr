@@ -42,25 +42,25 @@ module Jr
 
   Addition = Struct.new(:left, :right) do
     def evaluate
-      left + right
+      left.evaluate + right
     end
   end
 
   Subtraction = Struct.new(:left, :right) do
     def evaluate
-      left - right
+      left.evaluate - right
     end
   end
 
   Multiplication = Struct.new(:left, :right) do
     def evaluate
-      left * right
+      left.evaluate * right
     end
   end
 
   Division = Struct.new(:left, :right) do
     def evaluate
-      left / right
+      left.evaluate / right
     end
   end
 end
