@@ -1,0 +1,30 @@
+#!/usr/bin/env ruby
+
+require 'jr'
+require 'readline'
+
+begin
+  runtime = Jr::Runtime.new
+  history = Readline::HISTORY
+
+  while input = Readline.readline('  ', true)
+    begin
+      input.strip!
+      if input.empty?
+        history.pop
+      else
+        puts "= #{runtime.evaluate(input).inspect}"
+        histories = history.length
+        history.pop if histories >= 2 && history[histories-2] == history[histories-1]
+      end
+    rescue Parslet::ParseFailed => error
+      puts error.parse_failure_cause.ascii_tree, ''
+    rescue RuntimeError => error
+      puts error.message, ''
+    end
+  end
+
+rescue Interrupt
+  puts "Bye"
+  exit
+end
