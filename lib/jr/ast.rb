@@ -5,7 +5,19 @@ module Jr
     end
 
     def inspect
-      values.join(" ")
+      values.map { |v| v.to_s.sub('-', '_') } * ' '
+    end
+
+    def +@
+      self
+    end
+
+    def -@
+      Vector[values.map { |v| -v }]
+    end
+
+    def clamp_values
+      Vector[values.map { |v| v.clamp(-1,1) }]
     end
 
     def +(other)
@@ -42,6 +54,50 @@ module Jr
     end
   end
 
+  # Generic operators
+
+  class Plus
+    def self.infix(left, right)
+      Addition.new(left, right)
+    end
+
+    def self.prefix(right)
+      +right.evaluate
+    end
+  end
+
+  class Minus
+    def self.infix(left, right)
+      Subtraction.new(left, right)
+    end
+
+    def self.prefix(right)
+      -right.evaluate
+    end
+  end
+
+  class Times
+    def self.infix(left, right)
+      Multiplication.new(left, right)
+    end
+
+    def self.prefix(right)
+      right.evaluate.clamp_values
+    end
+  end
+
+  class Over
+    def self.infix(left, right)
+      Division.new(left, right)
+    end
+
+    def self.prefix(right)
+      raise "TODO"
+    end
+  end
+
+  # Infix operators
+
   Addition = Struct.new(:left, :right) do
     def evaluate
       left.evaluate + right
@@ -65,4 +121,5 @@ module Jr
       left.evaluate / right
     end
   end
+
 end
