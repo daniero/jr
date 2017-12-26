@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+
+require 'jr'
+
+runtime = Jr::Runtime.new
+
+while gets
+  begin 
+    p runtime.evaluate($_) unless $_.strip.empty?
+  rescue Parslet::ParseFailed => error
+    puts error.parse_failure_cause.ascii_tree
+  rescue RuntimeError => error
+    puts error.message
+  end
+end

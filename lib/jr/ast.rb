@@ -36,6 +36,8 @@ module Jr
       elsif y.values.length == 1
         v = y.values.first
         Vector[values.map { |z| yield z,v }]
+      else
+        raise "length error"
       end
     end
   end
