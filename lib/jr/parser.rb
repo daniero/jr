@@ -1,4 +1,5 @@
 require 'parslet'
+require 'jr/operators'
 require 'jr/ast'
 
 module Jr
@@ -49,10 +50,10 @@ module Jr
 
     rule(parens: subtree(:exp)) { exp }
 
-    rule(plus: simple(:_)) { Plus }
-    rule(minus: simple(:_)) { Minus }
-    rule(times: simple(:_)) { Times }
-    rule(divide: simple(:_)) { Over }
+    rule(plus: simple(:_)) { Operators::Plus }
+    rule(minus: simple(:_)) { Operators::Minus }
+    rule(times: simple(:_)) { Operators::Times }
+    rule(divide: simple(:_)) { Operators::Over }
 
     rule(left: simple(:left), infix: simple(:op), right: simple(:right)) do
       op.infix(left, right)

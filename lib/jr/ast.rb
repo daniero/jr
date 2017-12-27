@@ -16,28 +16,28 @@ module Jr
       Vector[values.map { |v| -v }]
     end
 
-    def clamp_values
+    def sign
       Vector[values.map { |v| v.clamp(-1,1) }]
     end
 
     def +(other)
-      apply_infix(other) { |x,y| x + y }
+      infix(other) { |x,y| x + y }
     end
 
     def -(other)
-      apply_infix(other) { |x,y| x - y }
+      infix(other) { |x,y| x - y }
     end
 
     def *(other)
-      apply_infix(other) { |x,y| x * y }
+      infix(other) { |x,y| x * y }
     end
 
     def /(other)
-      apply_infix(other) { |x,y| x / y }
+      infix(other) { |x,y| x / y }
     end
 
     private
-    def apply_infix(other)
+    def infix(other)
       y = other.evaluate
 
       if values.length == 1
@@ -51,48 +51,6 @@ module Jr
       else
         raise "length error"
       end
-    end
-  end
-
-  # Generic operators
-
-  class Plus
-    def self.infix(left, right)
-      Addition.new(left, right)
-    end
-
-    def self.prefix(right)
-      +right.evaluate
-    end
-  end
-
-  class Minus
-    def self.infix(left, right)
-      Subtraction.new(left, right)
-    end
-
-    def self.prefix(right)
-      -right.evaluate
-    end
-  end
-
-  class Times
-    def self.infix(left, right)
-      Multiplication.new(left, right)
-    end
-
-    def self.prefix(right)
-      right.evaluate.clamp_values
-    end
-  end
-
-  class Over
-    def self.infix(left, right)
-      Division.new(left, right)
-    end
-
-    def self.prefix(right)
-      raise "TODO"
     end
   end
 
@@ -119,6 +77,20 @@ module Jr
   Division = Struct.new(:left, :right) do
     def evaluate
       left.evaluate / right
+    end
+  end
+
+  # Prefix operators
+
+  Negation = Struct.new(:exp) do
+    def evaluate
+      -exp.evaluate
+    end
+  end
+
+  Sign = Struct.new(:exp) do
+    def evaluate
+      exp.evaluate.sign
     end
   end
 
