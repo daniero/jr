@@ -55,7 +55,7 @@ module Jr
     rule(times: simple(:_)) { Operators::Times }
     rule(divide: simple(:_)) { Operators::Over }
 
-    rule(left: simple(:left), infix: simple(:op), right: simple(:right)) do
+    rule(infix: simple(:op), left: simple(:left), right: simple(:right)) do
       op.infix(left, right)
     end
 
